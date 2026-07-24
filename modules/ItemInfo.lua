@@ -182,12 +182,17 @@ function api:IsItemUpgrade(itemLink)
 			end
 		end
 	elseif app.Slot[itemEquipLoc] == 17 then
+		local mainHand = GetInventoryItemLink("player", 16)
+		local _, mainHandLoc
+		if mainHand then
+			_, _, _, _, _, _, _, _, mainHandLoc = C_Item.GetItemInfo(mainHand)
+		end
 		if GetInventoryItemLink("player", app.Slot[itemEquipLoc]) then
 			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(app.Slot[itemEquipLoc])))
-		elseif GetInventoryItemLink("player", 16) then
-			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
-		else
+		elseif mainHand and app.Slot[mainHandLoc] ~= 1617 then
 			table.insert(equippedItemLevel, 0)
+		elseif mainHand then
+			table.insert(equippedItemLevel, C_Item.GetCurrentItemLevel(ItemLocation:CreateFromEquipmentSlot(16)))
 		end
 	end
 
