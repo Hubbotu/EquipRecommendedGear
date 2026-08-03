@@ -160,7 +160,7 @@ function api:IsItemUpgrade(itemLink)
 				table.insert(equippedItemLevel, 0)
 			end
 		end
-	elseif not GetInventoryItemLink("player", 16) and not GetInventoryItemLink("player", 17) then
+	elseif not GetInventoryItemLink("player", 16) then
 		table.insert(equippedItemLevel, 0)
 	elseif app.Slot[itemEquipLoc] == 1617 then
 		if app.SpecID == 72 then
