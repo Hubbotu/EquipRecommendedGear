@@ -506,7 +506,7 @@ end)
 
 app.Event:Register("ACTIVE_PLAYER_SPECIALIZATION_CHANGED", function()
 	if app.Settings["runAfterSpecSwitch"] and not InCombatLockdown() then
-		C_Timer.After(1, function()
+		C_Timer.After(2, function()
 			if not app.Flag.ChangingOnSpec then
 				app.Flag.ChangingOnSpec = true
 				api:DoTheThing(app.Settings["chatMessage3"])
