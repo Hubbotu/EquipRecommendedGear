@@ -129,7 +129,7 @@ function api:DoTheThing(msg)
 			end
 
 			if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
-			tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = -1, bagSlot = slot })
+			tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, upgradeTrack = C_Item.GetItemUpgradeInfo(itemLink).trackStringID or 0, bag = -1, bagSlot = slot })
 		end
 	end
 
@@ -173,7 +173,7 @@ function api:DoTheThing(msg)
 
 						if api:IsItemUpgrade(itemLink) then
 							if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
-							tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, bag = bag, bagSlot = bagSlot })
+							tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, upgradeTrack = C_Item.GetItemUpgradeInfo(itemLink).trackStringID or 0, bag = bag, bagSlot = bagSlot })
 						end
 					end
 				end
@@ -185,7 +185,7 @@ function api:DoTheThing(msg)
 		app:Print("DEBUG: ELIGIBLE ITEMS")
 		for _, v in ipairs(eligibleItems) do
 			local unique = v.unique and "true" or "false"
-			print(v.itemLink..", " .. v.itemID..", " .. v.itemEquipLoc..", " .. unique..", " .. v.ilv..", " .. v.bag.."."..v.bagSlot)
+			print(v.itemLink..", " .. v.itemID..", " .. v.itemEquipLoc..", " .. unique..", " .. v.ilv..", " .. v.upgradeTrack..", " .. v.bag.."."..v.bagSlot)
 		end
 	end
 
@@ -198,6 +198,8 @@ function api:DoTheThing(msg)
 			local existing = seen[item.itemID]
 			if existing then
 				if item.ilv > existing.ilv then
+					seen[item.itemID] = item
+				elseif item.ilv == existing.ilv and item.upgradeTrack > existing.upgradeTrack then
 					seen[item.itemID] = item
 				elseif item.ilv == existing.ilv then
 					if item.bag == -1 and existing.bag ~= -1 then
@@ -222,7 +224,7 @@ function api:DoTheThing(msg)
 		app:Print("DEBUG: ELIGIBLE ITEMS MINUS UNIQUE DUPES")
 		for _, v in ipairs(eligibleItems) do
 			local unique = v.unique and "true" or "false"
-			print(v.itemLink..", " .. v.itemID..", " .. v.itemEquipLoc..", " .. unique..", " .. v.ilv..", " .. v.bag.."."..v.bagSlot)
+			print(v.itemLink..", " .. v.itemID..", " .. v.itemEquipLoc..", " .. unique..", " .. v.ilv..", " .. v.upgradeTrack..", " .. v.bag.."."..v.bagSlot)
 		end
 	end
 
@@ -242,6 +244,8 @@ function api:DoTheThing(msg)
 		table.sort(items, function(a, b)
 			if a.ilv ~= b.ilv then
 				return a.ilv > b.ilv
+			elseif a.upgradeTrack ~= b.upgradeTrack then
+				return a.upgradeTrack > b.upgradeTrack
 			elseif a.bag ~= b.bag then
 				return a.bag == -1
 			else
