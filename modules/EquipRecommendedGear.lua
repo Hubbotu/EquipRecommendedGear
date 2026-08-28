@@ -487,7 +487,7 @@ end
 ------------
 
 app.Event:Register("QUEST_TURNED_IN", function(questID, xpReward, moneyReward)
-	if app.Settings["runAfterQuest"] == true and not InCombatLockdown() then
+	if app.Settings["runAfterQuest"] and not InCombatLockdown() then
 		C_Timer.After(1, function()
 			api:DoTheThing(app.Settings["chatMessage"])
 		end)
@@ -495,9 +495,23 @@ app.Event:Register("QUEST_TURNED_IN", function(questID, xpReward, moneyReward)
 end)
 
 app.Event:Register("PLAYER_LEVEL_UP", function(level, healthDelta, powerDelta, numNewTalents, numNewPvpTalentSlots, strengthDelta, agilityDelta, staminaDelta, intellectDelta)
-	if app.Settings["runAfterLevelUp"] == true and not InCombatLockdown() then
+	if app.Settings["runAfterLevelUp"] and not InCombatLockdown() then
 		C_Timer.After(1, function()
 			api:DoTheThing(app.Settings["chatMessage2"])
+		end)
+	end
+end)
+
+app.Event:Register("ACTIVE_PLAYER_SPECIALIZATION_CHANGED", function()
+	if app.Settings["runAfterSpecSwitch"] and not InCombatLockdown() then
+		C_Timer.After(1, function()
+			if not app.Flag.ChangingOnSpec then
+				app.Flag.ChangingOnSpec = true
+				api:DoTheThing(app.Settings["chatMessage3"])
+				C_Timer.After(1, function()
+					app.Flag.ChangingOnSpec = false
+				end)
+			end
 		end)
 	end
 end)

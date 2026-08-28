@@ -272,5 +272,11 @@ function app:CreateSettings()
 		{ value = 2, name = L.MESSAGE_ALWAYS, description = L.MESSAGE_ALWAYS_DESC },
 	})
 
+	checkboxDropdown("runAfterSpecSwitch", L.RUN_AFTER_SPECSWITCH .. app.IconNew, L.RUN_AFTER_SPECSWITCH_DESC, true, "chatMessage3", 1, {
+		{ value = 0, name = L.MESSAGE_NEVER, description = L.MESSAGE_NEVER_DESC },
+		{ value = 1, name = L.MESSAGE_UPGRADE, description = L.MESSAGE_UPGRADE_DESC },
+		{ value = 2, name = L.MESSAGE_ALWAYS, description = L.MESSAGE_ALWAYS_DESC },
+	})
+
 	checkbox("includeWeapons", L.SETTINGS_INCLUDEWEAPONS_TITLE, L.SETTINGS_INCLUDEWEAPONS_DESC, true)
 end
