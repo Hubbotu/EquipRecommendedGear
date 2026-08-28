@@ -129,7 +129,9 @@ function api:DoTheThing(msg)
 			end
 
 			if classID == 2 and subclassID == 19 then itemEquipLoc = "INVTYPE_WEAPONMAINHAND" end -- Adjust Wands because goddammit Blizzard
-			tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, upgradeTrack = C_Item.GetItemUpgradeInfo(itemLink).trackStringID or 0, bag = -1, bagSlot = slot })
+			if api:IsItemEquippable(itemLink) then
+				tinsert(eligibleItems, { itemLink = itemLink, itemID = itemID, itemEquipLoc = itemEquipLoc, unique = unique, ilv = ilv, upgradeTrack = C_Item.GetItemUpgradeInfo(itemLink).trackStringID or 0, bag = -1, bagSlot = slot })
+			end
 		end
 	end
 
